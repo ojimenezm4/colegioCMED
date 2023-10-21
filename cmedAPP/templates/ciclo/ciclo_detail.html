@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Detalle del Ciclo</h1>
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ ciclo.grado }} - {{ ciclo.año }}</span>
+      <p><strong>Grado:</strong> {{ ciclo.grado }}</p>
+      <p><strong>Año:</strong> {{ ciclo.año }}</p>
+      <p><strong>Activo:</strong> {% if ciclo.activo %}Sí{% else %}No{% endif %}</p>
+    </div>
+    <div class="card-action">
+      <a href="{% url 'ciclo-update' ciclo.pk %}" class="btn">Editar Ciclo</a>
+      <a href="{% url 'ciclo-list' %}" class="btn">Volver a la lista de ciclos</a>
+    </div>
+  </div>
+{% endblock %}

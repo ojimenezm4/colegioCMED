@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CMED</title>
+    <!-- Agrega las referencias a los estilos de Materialize CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'img/logoCMED.png' %}" rel="icon">
+    <link href="https://fonts.cdnfonts.com/css/blacksword" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+<header>
+    <nav>
+        <div class="nav-wrapper azulMuni">
+            <img src="{% static 'img/logoCMED.png' %}" alt="Logo" class="logoCMED brand-logo">
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+
+                {% if user.is_authenticated and user.is_active %}
+                    <li><a class="flow-text" href="#">
+
+                    </a></li>
+                    <li><a class="flow-text" href="#">Clases</a></li>
+                    <li><a class="flow-text" href="{% url 'ciclo-list' %}">Colegio</a></li>
+
+                {% endif %}
+
+                {% if user.is_authenticated and user.personal.is_admin or user.is_staff %}
+
+                    <ul id="GestionarPersonal" class="dropdown-content">
+                        <li><a href="{% url 'crear_alumno' %}" class="flow-text">Crear Alumno</a></li>
+                        <li><a href="{% url 'crear_profesor' %}" class="flow-text">Crear Profesor</a></li>
+                        <li><a href="{% url 'crear_admin' %}" class="flow-text">Crear Admin</a></li>
+                        <li><a href="#" class="flow-text">Ver Personal</a></li>
+                    </ul>
+
+
+                    <li class=" dropdown-trigger flow-text" href="#!" data-target="GestionarPersonal"
+                        style="margin: 0 2em!important">Gestionar Personal<i
+                            class="material-icons right">arrow_drop_down</i></li>
+
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <a id="logout-button" href="{% url 'logout' %}"
+                       class="btn waves-effect waves-light flow-text celesteMuni">Cerrar sesión</a>
+                {% else %}
+                    <!-- Botón para abrir el modal -->
+                    <a class="waves-effect waves-light btn modal-trigger flow-text " href="#login-modal2">Iniciar
+                        Sesión</a>
+
+                    <!-- Modal de inicio de sesión -->
+                    <div id="login-modal2" class="modal">
+                        <div class="modal-content">
+                            <h4 style="color: black!important" class="flow-text">Iniciar Sesión</h4>
+                            <form action="/autenticacion/login/" method="POST">
+                                <input type="email" name="email" placeholder="Correo electrónico" class="flow-text">
+                                <input type="password" name="password" placeholder="Contraseña" class="flow-text">
+                                <button type="submit" class="bt flow-text">Iniciar sesión</button>
+                            </form>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+            </ul>
+        </div>
+
+    </nav>
+
+    <ul class="sidenav" id="mobile-demo">
+
+        {% if user.is_authenticated and user.is_active %}
+            <li><a class="flow-text" href="#">
+                Mi Perfil
+            </a></li>
+            <li><a class="flow-text" href="#">Clases</a></li>
+            <li><a class="flow-text" href="{% url 'ciclo-list' %}">Colegio</a></li>
+
+        {% endif %}
+
+        {% if user.is_authenticated and user.personal.is_admin or user.is_staff %}
+
+            <ul id="GestionarPersonalmob" class="dropdown-content">
+                <li><a href="{% url 'crear_admin' %}" class="flow-text ">Crear Alumno</a></li>
+                <li><a href="{% url 'crear_profesor' %}" class="flow-text ">Crear Profesor</a></li>
+                <li><a href="{% url 'crear_admin' %}" class="flow-text ">Crear Admin</a></li>
+                <li><a href="#" class="flow-text ">Ver Personal</a></li>
+            </ul>
+
+
+            <li class=" dropdown-trigger flow-text" href="#!" data-target="GestionarPersonalmob"
+                style="margin: 2em 0!important">Gestionar Personal<i
+                    class="material-icons right">arrow_drop_down</i></li>
+
+        {% endif %}
+        {% if user.is_authenticated %}
+            <a id="logout-button" href="{% url 'logout' %}"
+               class="btn waves-effect waves-light flow-text celesteMuni">Cerrar sesión</a>
+        {% else %}
+            <!-- Botón para abrir el modal -->
+            <a class="waves-effect waves-light btn modal-trigger" href="#login-modal">Iniciar Sesión</a>
+            <div id="login-modal" class="modal">
+                <div class="modal-content">
+                    <h4 style="color: black!important">Iniciar Sesión</h4>
+                    <form action="/autenticacion/login/" method="POST">
+                        <input type="email" name="email" placeholder="Correo electrónico">
+                        <input type="password" name="password" placeholder="Contraseña">
+                        <button type="submit">Iniciar sesión</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+
+    </ul>
+</header>
+
+<main>
+    {% if user.is_authenticated %}
+        <div class="col s12 m8 offset-m2 l6 offset-l3">
+            <div class="card-panel grey lighten-5 z-depth-1">
+                <div class="row valign-wrapper">
+                    <div class="col s2">
+                        <img src="../media/perfil/IMG_0132.png" alt="" class="responsive-img">
+                    </div>
+                    <div class="col s10">
+                      <span style="color: #06c; font-size: 1.6em!important;">
+
+                          {{ user.personal.nombres }} {{ user.personal.apellidos }}
+
+                          {% if user.personal.is_admin %}
+                              - Área Administrativa
+                          {% elif user.personal.is_profesor %}
+                              - Profesor - {{ user.personal.profesor.profesion }}
+
+                          {% else %}
+                              - Alumno -
+                          {% endif %}
+
+                      </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% block content %}
+
+
+    {% endblock %}
+
+</main>
+
+<footer class="page-footer azulMuni">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
+                    content.</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                    <li><a class="grey-text text-lighten-3" href="#!">Facebook</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container ">
+            © 2024 CMED Concepción Las Minas
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        </div>
+    </div>
+</footer>
+<!-- Agrega la referencia a los scripts de Materialize CSS al final del archivo -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script src="{% static 'script/scripts.js' %}"></script>
+
+</body>
+</html>

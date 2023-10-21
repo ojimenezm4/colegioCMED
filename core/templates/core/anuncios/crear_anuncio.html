@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div id="modal-crear-anuncio" class="modal">
+        <div class="modal-content">
+            <h4>Crear Nueva Anuncio</h4>
+            <form method="post"  action="{% url 'crear_anuncio' %}" id="crear-anuncio-form">
+                {% csrf_token %}
+                <div class="input-field">
+                    <input type="text" id="titulo" name="titulo" required>
+                    <label for="titulo">Título</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="contenido" name="contenido" required>
+                    <label for="contenido">Contenido</label>
+                </div>
+                <div class="input-field hide">
+                    <input type="text" id="fecha_y_hora" name="fecha_y_hora" readonly>
+                    <label for="fecha_y_hora" class="active">Fecha y Hora</label>
+                </div>
+                <button type="submit" onclick="setCurrentTime()" class="btn waves-effect waves-light">Crear Anuncio
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function setCurrentTime() {
+            // Obtener el campo de fecha y hora
+            var fechaYHoraInput = document.getElementById('fecha_y_hora');
+
+            // Obtener la fecha y hora actual en el formato YYYY-MM-DDTHH:MM
+            var currentDateTime = new Date().toISOString().slice(0, 16);
+
+            // Establecer la fecha y hora actual en el campo de entrada
+            fechaYHoraInput.value = currentDateTime;
+
+            // Enviar el formulario
+            document.getElementById('anuncio-form').submit();
+        }
+
+        // Inicializar el modal
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems);
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="row">
+        <h1 class="center row letrasMuni">
+            Colegio Municipal de Educación Diversificada
+        </h1>
+        <h5 class="center row letrasMuni" >
+            - Educación que transforma con valores -
+        </h5>
+    </div>
+
+    <div class="row">
+
+
+    </div>
+
+
+    <!--Modals -->
+    {% if user.is_authenticated and user.is_staff %}
+
+         <div id="modal-crear-anuncio" class="modal">
+        <div class="modal-content">
+            <h4>Crear Nueva Anuncio</h4>
+            <form method="post" action="{% url 'crear_anuncio' %}" id="crear-anuncio-form">
+                {% csrf_token %}
+                <div class="input-field">
+                    <input type="text" id="titulo" name="titulo" required>
+                    <label for="titulo">Título</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="contenido" name="contenido" required>
+                    <label for="contenido">Contenido</label>
+                </div>
+                <div class="input-field hide">
+                    <input type="text" id="fecha_y_hora" name="fecha_y_hora" readonly>
+                    <label for="fecha_y_hora" class="active">Fecha y Hora</label>
+                </div>
+                <button type="submit" onclick="setCurrentTime()" class="btn waves-effect waves-light">Crear Anuncio
+                </button>
+                <a class="modal-close btn waves-effect waves-light">Volver</a>
+
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    <!-- l-->
+    <div class="parallax-container ">
+        <div class="parallax "><img src={% static 'img/parallaxLOGOS.jpg' %}></div>
+    </div>
+
+    <div class="section white">
+
+        <div class="row container">
+
+            <h2 class="header center">Misión:</h2>
+            <p class="grey-text text-darken-3 lighten-3 center flow-text ">
+                "En el Colegio Municipal de Educación Diversificada (CMED), nuestra misión es brindar educación
+                diversificada de calidad, inclusiva y gratuita a la comunidad de Concepción Las Minas y sus alrededores.
+                Nos comprometemos a empoderar a nuestros estudiantes con las habilidades, conocimientos y valores
+                necesarios para enfrentar los desafíos del siglo XXI. A través de un enfoque innovador y la colaboración
+                de docentes comprometidos, fomentamos el desarrollo integral de nuestros alumnos, promoviendo la
+                equidad, la participación ciudadana y la excelencia académica".
+            </p>
+        </div>
+    </div>
+    <div class="parallax-container">
+        <div class="parallax"><img src={% static 'img/parallaxEST.jpg' %}></div>
+    </div>
+
+    <div class="section white">
+        <div class="row container">
+            <h2 class="header center">Visón:</h2>
+            <p class="grey-text text-darken-3 lighten-3 center flow-text">
+                "El CMED es un referente de excelencia educativa y un pilar fundamental en el desarrollo integral de la
+                comunidad de Concepción Las Minas. Nuestra visión es ser reconocidos como un colegio diversificado de
+                vanguardia, que inspira la transformación personal y social a través de la educación. Buscamos ser
+                líderes en la formación de ciudadanos responsables, críticos, creativos y comprometidos con el bienestar
+                de su entorno. A medida que avanzamos en el siglo XXI, nuestro compromiso con la innovación, la
+                inclusión y la calidad educativa sigue siendo nuestro motor para alcanzar un futuro prometedor para
+                nuestros estudiantes y la comunidad en su conjunto". </p>
+        </div>
+    </div>
+    <div class="parallax-container">
+        <div class="parallax"><img src={% static 'img/parallaxMuni.jpg' %}></div>
+    </div>
+
+    <div class="row centrado" >
+        <ul class="collapsible col s7 centrado" >
+            <h3 class="center " style="padding: 1em">Anuncios</h3>
+
+            {% for anuncio in anuncios %}
+                <li>
+                    <div class="collapsible-header flow-text" style="padding: 1em">
+                        {{ anuncio.titulo }} - {{ anuncio.fecha_y_hora }}
+
+                    </div>
+
+                    <div class="collapsible-body">
+                        <div class="center flow-text" style="padding: 3em 1em">
+                            {{ anuncio.contenido | safe }}
+
+                            {% if user.is_authenticated and user.is_staff %}
+                                </div>
+                                <a href="{% url 'editar_anuncio' anuncio.id %}">
+                                    <i class="material-icons right small">edit</i>
+                                </a>
+
+                                <a href="{% url 'eliminar_anuncio' anuncio.id %}"
+                                   onclick="return confirm('¿Estás seguro que deseas eliminar esta oficina?')">
+                                    <i class="material-icons right red-text small">delete</i>
+                                </a>
+                            {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+            {% if user.is_authenticated and user.is_staff %}
+                <button data-target="modal-crear-anuncio" class="btn modal-trigger" style="margin: 3em">Crear Anuncio
+                </button>
+            {% endif %}
+        </ul>
+    </div>
+
+
+{% endblock %}

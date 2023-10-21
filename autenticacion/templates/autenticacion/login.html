@@ -1,0 +1,52 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <h4>{{ titulo }}</h4>
+            <form method="post"  action="{% url 'login' %}" id="login-form">
+                {% csrf_token %}
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                <button class="btn waves-effect waves-light" type="submit">Iniciar sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar errores -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content">
+            <h4>Error de inicio de sesión</h4>
+            <p id="error-message"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            const errorModal = document.getElementById('errorModal');
+            const errorMessage = document.getElementById('error-message');
+
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                // Realiza la solicitud de inicio de sesión utilizando AJAX u otra forma que prefieras.
+                // En caso de error, muestra el mensaje en el modal.
+
+                // Por ejemplo, aquí se muestra un mensaje de error ficticio:
+                errorMessage.textContent = "Credenciales de inicio de sesión inválidas.";
+                const instance = M.Modal.init(errorModal);
+                instance.open();
+            });
+        });
+    </script>
+{% endblock %}

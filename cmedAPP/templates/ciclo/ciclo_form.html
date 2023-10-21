@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Ciclo</h1>
+  <form method="post" class="col s12">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn waves-effect waves-light" type="submit" name="action">
+      {% if form.instance.pk %}Actualizar{% else %}Crear{% endif %} Ciclo
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+  <a href="{% url 'ciclo-list' %}" class="btn">Volver a la lista de ciclos</a>
+{% endblock %}

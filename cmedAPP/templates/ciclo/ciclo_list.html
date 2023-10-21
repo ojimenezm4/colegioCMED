@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Lista de Ciclos</h1>
+  <ul class="collapsible">
+    {% for ciclo in ciclos %}
+      <li>
+        <div class="collapsible-header">
+          <i class="material-icons">folder</i>
+          {{ ciclo.grado }} - {{ ciclo.año }}
+        </div>
+        <div class="collapsible-body">
+          <a href="{% url 'ciclo-detail' ciclo.pk %}" class="waves-effect waves-light btn"><i class="material-icons left">info</i>Detalles</a>
+          <a href="{% url 'ciclo-update' ciclo.pk %}" class="waves-effect waves-light btn"><i class="material-icons left">edit</i>Editar</a>
+        </div>
+      </li>
+    {% empty %}
+      <li>No hay ciclos disponibles.</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'ciclo-create' %}" class="btn">Crear Ciclo</a>
+{% endblock %}

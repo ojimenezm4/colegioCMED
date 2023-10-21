@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row centrado">
+        <ul class="collapsible col s7 centrado">
+            <h3 class="center " style="padding: 1em">Anuncios</h3>
+
+
+
+            {% for anuncio in anuncios %}
+                <li>
+                    <div class="collapsible-header flow-text" style="padding: 1em">
+                        {{ anuncio.titulo }} - {{ anuncio.fecha_y_hora }}
+
+                    </div>
+
+                    <div class="collapsible-body">
+                        <div class="center flow-text" style="padding: 3em 1em">
+                            {{ anuncio.contenido | safe }}
+
+                            {% if user.is_authenticated and user.is_staff %}
+                                </div>
+                                <a href="{% url 'editar_anuncio' anuncio.id %}">
+                                    <i class="material-icons right small">edit</i>
+                                </a>
+
+                                <a href="{% url 'eliminar_anuncio' anuncio.id %}"
+                                   onclick="return confirm('¿Estás seguro que deseas eliminar este anuncio?')">
+                                    <i class="material-icons right red-text small">delete</i>
+                                </a>
+                            {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+            {% if user.is_authenticated and user.is_staff %}
+                <button data-target="modal-crear-anuncio" class="btn modal-trigger" style="margin: 3em">Crear Anuncio
+                </button>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

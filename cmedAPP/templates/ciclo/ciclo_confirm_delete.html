@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>¿Seguro que quieres eliminar el ciclo?</h1>
+  <p><strong>Grado:</strong> {{ ciclo.grado }}</p>
+  <p><strong>Año:</strong> {{ ciclo.año }}</p>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn waves-effect waves-light" type="submit" name="action">Confirmar Eliminación
+      <i class="material-icons right">delete</i>
+    </button>
+  </form>
+  <a href="{% url 'ciclo-list' %}" class="btn">Cancelar</a>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="letrasMuni center">Crear Administrador</h1>
+    <div class="row center">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col s12 center-align valign-wrapper">
+                <div class="file-field input-field ">
+                    <div class="file-field input-field">
+                        <div class="btn waves-effect waves-light ">
+                            <span>Subir imagen</span>
+                            {{ form.imagen_perfil }}
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate hide">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6">
+                <div class="input-field">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+
+                <!-- Otros campos -->
+                <div class="input-field">
+                    <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                    {{ form.password }}
+                </div>
+
+                <div class="input-field">
+                    <label for="{{ form.password2.id_for_label }}">Confirmar contraseña</label>
+                    {{ form.password2 }}
+                </div>
+
+                <div class="input-field">
+                    {{ form.nombres.label_tag }}
+                    {{ form.nombres }}
+                </div>
+                <div class="input-field">
+                    {{ form.apellidos.label_tag }}
+                    {{ form.apellidos }}
+                </div>
+
+            </div>
+            <div class="col s12 m6">
+                <div class="input-field">
+                    {{ form.telefono.label_tag }}
+                    {{ form.telefono }}
+                </div>
+
+
+                <div class="input-field">
+                    {{ form.direccion.label_tag }}
+                    {{ form.direccion }}
+                </div>
+                <div class="input-field">
+                    {{ form.fecha_nacimiento }}
+                    {{ form.fecha_nacimiento.label_tag }}
+
+                </div>
+
+                <div class="input-field">
+                    {{ form.condiciones.label_tag }}
+                    {{ form.condiciones }}
+                </div>
+            </div>
+            <div class="col s12">
+                <button class="btn waves-effect waves-light" type="submit">Crear</button>
+                <a class="btn waves-effect waves-light" href="{% url 'index' %}">Atrás</a>
+
+            </div>
+        </form>
+    </div>
+{% endblock %}

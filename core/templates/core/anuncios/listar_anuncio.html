@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Listado de Anuncios</h1>
+    <ul>
+        {% for anuncio in anuncios %}
+            <li>{{ anuncio.titulo }} - {{ anuncio.fecha_y_hora }}</li>
+            <a href="{% url 'editar_anuncio' anuncio.id %}">Editar</a>
+            <a href="{% url 'eliminar_anuncio' anuncio.id %}">Eliminar</a>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'index' %}">Crear Anuncio</a>
+{% endblock %}

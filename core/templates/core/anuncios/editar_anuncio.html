@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="row">
+    <h1 class="center">Editar Anuncio</h1>
+  </div>
+
+  <form method="post" class="col s12">
+    {% csrf_token %}
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="titulo" name="titulo" type="text" class="validate" value="{{ anuncio.titulo }}">
+        <label for="titulo">Título</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="contenido" name="contenido" class="materialize-textarea">{{ anuncio.contenido }}</textarea>
+        <label for="contenido">Contenido</label>
+      </div>
+    </div>
+    <div class="row hide">
+      <div class="input-field col s12">
+        <input id="fecha_y_hora" name="fecha_y_hora" type="datetime-local" value="{{ anuncio.fecha_y_hora|date:"Y-m-d\TH:i" }}" class="validate" required>
+        <label for="fecha_y_hora">Fecha y Hora</label>
+      </div>
+    </div>
+    <button class="btn waves-effect waves-light" onclick="setCurrentTime()" type="submit" name="action">Guardar Cambios
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+  <a href="{% url 'index' %}" class="btn waves-effect waves-light">Volver</a>
+{% endblock %}
